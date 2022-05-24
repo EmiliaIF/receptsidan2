@@ -21,25 +21,13 @@ app.listen(port, () => {
 })
 
 app.use(cors())
-
 app.use(json());
-
-
-
 app.use(bodyParser.json());
-
-//IMPORT ROUTES
-
 
 //ROUTES
 app.get('/', (req, res) => {
     res.send();
 });
 
-
-
-
 app.use('/recept', Recept)
 app.use('/kategori', kategori)
-
-

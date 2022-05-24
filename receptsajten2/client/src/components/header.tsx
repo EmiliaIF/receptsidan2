@@ -13,19 +13,19 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-background-color: peachpuff;
+background-color: #9DEEDB;
 
 .styling{
     font-family:kaushan script;
     position:absolute;
     color: black;
     z-index:5;
-    font-size:65px;
+    font-size:60px;
     margin-bottom: 30px;
 }
 
 
-}`
+`
     
 
 

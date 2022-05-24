@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import RecipeCard from "./receptkort";
+
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import recept from "./recept";
+import RecipeCard from "./receptkort"
 
 const StyledWrapper = styled.div`
     display: flex;
@@ -12,22 +13,43 @@ const StyledWrapper = styled.div`
 `
 
 const RecipesByCategoryList = () => {
-    const [recept, setRecipes] = useState<any>([]);
+    const [recepten, setRecipes] = useState<any>([]);
     const { categoryId } = useParams()
+    const [searchTerm, setSearchTerm] = useState('');
+  
     useEffect(() => {
-        const fetchRecipes = async () => {
-            const recept = await fetch(`http://localhost:3005/kategori/${categoryId}/recept`)
-            // const recipes = await fetch(`${process.env.REACT_APP_API_BASE_URL}/categories/${categoryId}/recipes`)
-            .then(res => res.json())
-            setRecipes(recept);
-        }
-        fetchRecipes();
+      const search = async () => { // En request för varje gång searchterm uppdateras
+          console.log(searchTerm)
+          const data = await fetch(`http://localhost:3005/recept/search/${searchTerm}`) // Hämtar alla recept som innehåller searchtermen
+          const recipes = await data.json()
+  
+          setRecipes(recipes) // Sätter alla recept till de recet som hämtats från GET requesten ovan
+      }
+  
+      if(searchTerm !== '') search() // Om searchTerm är tom, hämta alla recept, annars sök med searchTerm
+      else loadRecipes()
+    }, [searchTerm])
+    
+    useEffect(() => {
+        loadRecipes();
     }, [categoryId])
+
+    const loadRecipes = async () => {
+        const recepten = await fetch(`http://localhost:3005/kategori/${categoryId}`)
+        .then(res => res.json())
+        setRecipes(recepten);
+    }
+
     return (
         <div>
+            <input
+        type="text"
+        placeholder="Search for a drink!"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
             <StyledWrapper>
-                {recept.map((recept: any) => <RecipeCard key={recept._id} recipe={recept}></RecipeCard>)}
-                <p>categoryyyyyyy</p>
+                {recepten.map((recept: any) => <RecipeCard key={recept._id} recept={recept} />)}
             </StyledWrapper>
         </div>
     )

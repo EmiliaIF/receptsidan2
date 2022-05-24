@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Params, useParams } from "react-router-dom";
 import styled from "styled-components";
+import ReactStars from "react-stars";
 
 // const recipeprop {props:{
 //     recipe: RecipeType;
@@ -17,26 +18,26 @@ const StyledWrapper = styled.div`
   width: 100%;
   img {
     border-radius: 20px;
-    
-};
-
-  .descriptionRecipe{
-    background-color: #FF6287;
   }
 
-    .descriptionRecipe, .imageAndTitle{
-        margin: 3rem;
-        width: 25rem;
-        border-radius: 20px;
-       
-    }
+  .descriptionRecipe {
+    background-color: #ff6287;
+  }
 
+  .descriptionRecipe,
+  .imageAndTitle {
+    margin: 3rem;
+    width: 25rem;
+    border-radius: 20px;
   }
 `;
 
 const SingleRecipe = () => {
   const [recept, setRecipe] = useState<any>({});
+  const [rated, setRated] = useState(false)
   const { receptId } = useParams();
+  const [ratings, setRatings] = useState(0)
+  const [ingredients, setIngredients] = useState(0)
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -44,11 +45,35 @@ const SingleRecipe = () => {
         `http://localhost:3005/recept/${receptId}`
       ).then((res) => res.json());
       setRecipe(recept);
-      console.log("Recept: ", recept);
     };
     fetchRecipe();
-    console.log("Recept: ", recept);
   }, [receptId]);
+
+  const fetchStars = async (newRating: Number) => {
+    await fetch(`http://localhost:3005/recept/${receptId}/stars`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({rating: newRating})
+    })
+    setRated(true)
+  
+  }
+
+  useEffect(() => {
+    if(recept.ratings !== undefined) { // Kollar om där finns ratings
+      if(recept.ratings === []) return setRatings(0) // Kollar så att arrayen av ratings inte är tom
+
+      let tempRating = 0
+      for(let i = 0; i < recept.ratings.length; i++) { // Adderar antal rating till en total summa
+          tempRating += recept.ratings[i]
+      }
+
+      setRatings(tempRating / recept.ratings.length) // Sätter antalet ratings till den totala summan delat med längden av arrayen
+      setIngredients(recept.ingredients.length) // Sätter antalet ingredienser till längden av ingrediens arrayen
+    }
+  }, [recept])
 
   return (
     <StyledWrapper>
@@ -58,191 +83,44 @@ const SingleRecipe = () => {
       <div className="descriptionRecipe">
         <h1>{recept.title}</h1>
         <p>{recept.description}</p>
-        <p>{recept.timeinmins} Min</p>
-        <p>{recept.ratings} Rating</p>
+        <p>{recept.timeinmins} Minuter</p>
+        <p>{ingredients} Ingredienser</p>
+        <p><ReactStars count={5} value={ratings} size={24} color2={"#ffd700"} edit={false} /></p>
       </div>
       <div className="ingredientsRecipe">
-          <p>INGREDIENTS</p>
-          <div>
-            {recept.ingredients &&
-              recept.ingredients.map((ingredients: any) => (
-                <li key={ingredients.name}>
-                  {ingredients.name} {ingredients.amount} {ingredients.unit}{" "}
-                </li>
-              ))}
-          </div>
-                
-
+        <p>INGREDIENTS</p>
+        <div>
+          {recept.ingredients &&
+            recept.ingredients.map((ingredients: any) => (
+              <li key={ingredients.name}>
+                {ingredients.name} {ingredients.amount} {ingredients.unit}{" "}
+              </li>
+            ))}
         </div>
+      </div>
 
-        <div className="instructionsRecipe">
-          <p>INSTRUCTIONS</p>
-          <div>
-            {recept.instructions &&
-              recept.instructions.map((instructions: any) => (
-                <li key={instructions.order}>
-                  {instructions.instruction}  {" "}
-                </li>
-              ))}
-          </div>
+      <div className="instructionsRecipe">
+        <p>INSTRUCTIONS</p>
+        <div>
+          {recept.instructions &&
+            recept.instructions.map((instructions: any) => (
+              <li key={instructions.order}>{instructions.instruction} </li>
+            ))}
         </div>
+      </div>
+      <div>
+        <h1>Comment</h1>
+        {recept.comments &&
+          recept.comments.map((comment: any) => {
+            return <p>{comment.comment}</p>;
+          })}
+      </div>
+
+      <div>
+        {rated ? <p>Tack för ditt betyg</p> : <ReactStars count={5} size={24} color2={"#ffd700"} half={false} onChange={fetchStars} />}
+      </div>
     </StyledWrapper>
   );
-
-  //   return (
-  //     <div>
-  //       <div className="imageAndTitle">
-  //         <img
-  //           src={recept.imageUrl}
-  //           alt={recept.title}
-  //           width="454"
-  //           height="280"
-  //         />
-  //       </div>
-  //   <div className="descriptionRecipe">
-  //     <h1>{recept.title}</h1>
-  //     <p>{recept.description}</p>
-  //     <p>{recept.timeInMins} Min</p>
-  //     <p>{recept.ratings} Rating</p>
-  //   </div>
-        // <div className="ingredientsRecipe">
-        //   <p>INGREDIENTS</p>
-        //   <div>
-        //     {recept.ingredients &&
-        //       recept.ingredients.map((ingredients: any) => (
-        //         <li key={ingredients.ingredient}>
-        //           {ingredients.name} {ingredients.amount} {ingredients.unit}{" "}
-        //         </li>
-        //       ))}
-        //   </div>
-        // </div>
-        // <div className="instructionsRecipe">
-        //   <p>INSTRUCTIONS</p>
-        //   <div>
-        //     {recept.instructions &&
-        //       recept.instructions.map((instructions: any) => (
-        //         <li key={instructions}>{instructions} </li>
-        //       ))}
-        //   </div>
-        // </div>
-  //     </div>
-  //   );
 };
 
 export default SingleRecipe;
-
-// import styled from "styled-components";
-// // import Stars from "./Stars";
-// import { RecipeType } from "./recepttype";
-// import { NavLink } from "react-router-dom";
-// import { motion } from "framer-motion";
-
-// interface RecipeCardProps {
-//     recipe: RecipeType;
-//     isVisible?: boolean;
-// }
-
-// const StyledRecipeCard = styled(motion.div)`
-//     @media (max-width: 1440px) {
-//         width: 90vw;
-//     }
-//     @media (max-width: 1000px) {
-//         grid-template-columns: 3fr 2fr;
-//         & .ratings-container {
-//             display: none;
-//         }
-//     }
-//     :hover {
-//         box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
-//         transition: box-shadow 0.3s ease-in-out;
-//     }
-//     display: grid;
-//     grid-template-columns: 3fr repeat(2, 1fr);
-//     grid-template-rows: 1fr;
-//     align-items: center;
-//     width: 70vw;
-//     height: 10rem;
-//     font-family: 'Esteban';
-//     text-align: center;
-//     margin: .5rem 0rem;
-//     border: 1px solid black;
-//     border-radius: 0.5rem;
-//     background: linear-gradient(white, #e6e6e6);
-//     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-//     padding: 0rem;
-//     transition: box-shadow 0.3s ease-in-out;
-//     & h1 {
-//         text-align: center;
-//         font-family: 'Montserrat', serif;
-//         font-size: 1.5rem;
-//         color: black;
-//         font-weight: 700;
-//         text-transform: uppercase;
-//     }
-//     & a {
-//         text-decoration: none;
-//     }
-//     & .ratings-average {
-//         margin-top: 0rem;
-//         line-height: 0;
-//     }
-//     & .ratings-count {
-//         font-size: 0.8rem;
-//         line-height: 0rem;
-//     }
-//     & .comments {
-//         text-align: center;
-//     }
-//     & .image {
-//         grid-area: 1 / 1 / 2 / 2;
-//         height: 10rem;
-//         background-size: 100%;
-//         background-repeat: no-repeat;
-//         border-radius: 6px 0px 0px 6px;
-//         background-position: left 20% center;
-//     }
-//     & .image h1 {
-//         padding-left: 1rem;
-//         color: white;
-//         font-size: 2rem;
-//         text-align: left;
-//         text-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-//     }
-//     & .center {
-//         grid-area: 1 / 2 / 2 / 3;
-//     }
-//     & .ratings-container {
-//         grid-area: 1 / 3 / 2 / 4;
-//         margin: 0;
-//     }
-// `
-// const RecipeCard = ({recipe}: RecipeCardProps) => {
-//     const imageStyle = {
-//         backgroundImage: `url(${recipe.imageUrl})`,
-//     }
-//     return (
-//         <NavLink to={`/recipes/${recipe._id}`}>
-//             <StyledRecipeCard
-//                 initial={{ x: -150, opacity: 0 }}
-//                 animate={{ x: 0, opacity: 1 }}
-//             >
-//                     <div className="image" style={imageStyle}>
-//                         <h1>{recipe.title}</h1>
-//                     </div>
-//                     <div className="center">
-//                         <p>{recipe.ingredients.length} Ingredienser | {recipe.timeinMins} Minuter</p>
-//                         <p className="comments">{recipe.comments.length} kommentarer</p>
-//                     </div>
-//                     {/* <div className="ratings-container">
-//                         <Stars recipeRatings={recipe.ratings} recipeId={recipe._id} edit={false} size={40}/>
-//                         {recipe.ratings.length && <p className="ratings-average">{Math.round(recipe.ratings.reduce((a,b) => a + b, 0) / recipe.ratings.length * 100 + Number.EPSILON) / 100}/5</p>}
-//                         {recipe.ratings.length > 1 && <p className="ratings-count">({recipe.ratings.length} omdömen)</p>}
-//                         {recipe.ratings.length === 1 && <p className="ratings-count">({recipe.ratings.length} omdöme)</p>}
-//                         {!recipe.ratings.length && <p className="ratings-count">Inga omdömen än!</p>}
-//                     </div> */}
-//             </StyledRecipeCard>
-//         </NavLink>
-//     )
-// }
-
-// export default RecipeCard;

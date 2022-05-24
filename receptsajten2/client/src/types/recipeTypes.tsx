@@ -5,7 +5,7 @@ export interface RecipeTypes {
     imageUrl: String;
     timeInMins: Number;
     ratings: Array<number>;
-    category: Array<string>;
+    category: String;
     ingredients: [{name:string, amount:number, unit:string}];
     instructions: Array<string>;
     // ratings: number[];

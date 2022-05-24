@@ -19,7 +19,7 @@ export interface Recept{
         
 
     category: 
-     [category: string]
+    string
        
    
     ingredients: 
@@ -31,7 +31,7 @@ export interface Recept{
         
 
     ratings: 
-     number
+     [number]
    
     comments?:
      [{comment: string, name: string, createdAt: Date}]
@@ -60,11 +60,9 @@ const ReceptSchema = new Schema<Recept>({
     },
 
     category: {
-        type: [{
-           category: String,
-   
-            }],
-            required: true},
+        type: String,
+        required: true
+    },
     ingredients: {
         type: [{
          name: String,
@@ -90,8 +88,15 @@ const ReceptSchema = new Schema<Recept>({
          name: String,
          createdAt: Date,
 
-    }],
-    required: false},
+        }],
+        required: false
+    },
+
+    ratings: {
+        type: [Number],
+        required: false
+    },
+   
    
 
 });

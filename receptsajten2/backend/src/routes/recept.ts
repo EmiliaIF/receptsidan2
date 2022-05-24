@@ -6,100 +6,37 @@ import { useParams } from 'react-router';
 import {
     getRecipes,
     getReceptById,
-   
+    addStars,
+    getReceptBysearch
   } from '../models/receptcrud'
 
-
-
-
-//GET POST
 router.get('/', async (req: Request, res: Response) => {
   const responseRecipes = await getRecipes();
   res.status(200).json(responseRecipes);
-  // res.json(responseRecipes);
 });
 
 
-//GET POST BY ID
-
-// router.get(
-//   "/:receptId",
-//   async (req: express.Request, res: express.Response) => {
-//     const params = req.params;
-//     let id = params.recipeId;
-//     const receptById = await getReceptById(id);
-//     res.send(receptById);
-//   }
-// );
-// router.get(
-//   "/hej",
-//   async (req: express.Request, res: express.Response) => {
-
-//     res.status(200).json({});
-//   }
-// );
-
-
-router.get(
-    "/:receptId",
-    async (req: express.Request, res: express.Response) => {
+router.get("/:receptId",async (req: express.Request, res: express.Response) => {
       const params = req.params;
       let id = params.receptId;
       const receptById = await getReceptById(id);
 
-      // const receptId = await getReceptById(req.params.receptId)
-      // const recept = await getReceptById(receptId);
-      // res.send(recept);
       res.status(200).json(receptById);
     }
   );
-// router.get('/:receptId', (req,res) => {
-//     const recept = Recept.findById(req.params.receptId)
-//     res.json(recept);
-// })
 
-router.get(
-  "/search/:searchterm",
-  async (req: express.Request, res: express.Response) => {
-    const params = req.params;
 
-    const searchById = await getReceptBysearch(params.searchterm);
+router.get("/search/:searchterm", async (req: express.Request, res: express.Response) => { // GET Route som kommer med searchterm, vilket sedan används för att söka
+    console.log(req.params.searchterm)
+    const searchById = await getReceptBysearch(req.params.searchterm);
     res.send(searchById);
   }
 )
 
+router.put('/:id/stars', async (req: Request, res: Response) => { // PUT request för att stoppa in antalet stjärnor i rating arrayen
+  await addStars(req.params.id, req.body.rating);
+  res.send('ok');
+})
+
 
 export default router;
-
-
-
-
-function getReceptBysearch(id: string) {
-  throw new Error('Function not implemented.');
-}
-//SUBMIT POST
-
-// router.post('/', async (req,res) =>{
-//     const recept = new Recept({
-//         title: req.body.title,
-//         description: req.body.description,
-//         imageUrl: req.body.imageUrl,
-//         timeInMins: req.body.timeInMins,
-//         ratings: req.body.ratings,
-//         category: req.body.ingredients,
-//         instructions: req.body.instructions,
-//         comments: req.body.comments
-
-//     });
-    
-//     const savedRecept = await recept.save();
-//     res.json(savedRecept);
-  
-//     // .exec()
-//     // .then(data => {
-//     //     res.json(data);
-//     // })
-//     // .catch(err => {
-//     //     res.json({ message: err});
-//     // });
-// });
