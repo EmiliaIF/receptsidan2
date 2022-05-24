@@ -6,8 +6,8 @@ export interface interfacerecept {
     timeInMins: Number;
     ratings: Array<number>;
     category: Array<string>;
-    ingredients: [{ingredient:string, amount:number, unit:string}];
-    instructions: Array<string>;
+    ingredients: [{name:string, amount:number, unit:string}];
+    instructions: [{instruction:string, order:number}];
     // ratings: number[];
     // category: string[];
     // ingredients: any;

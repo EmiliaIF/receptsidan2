@@ -2,90 +2,134 @@ import { useState, useEffect } from "react";
 import { Params, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+// const recipeprop {props:{
+//     recipe: RecipeType;
+//     children?: React.ReactNode | ReactChild[] | ReactChildren | ReactChildren[];
+// Object.keys(myObj).length;
+// }
+
+// }
+
 const StyledWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  img {
+    border-radius: 20px;
     
-    section {
-        width: 30rem;
+};
+
+  .descriptionRecipe{
+    background-color: #FF6287;
+  }
+
+    .descriptionRecipe, .imageAndTitle{
+        margin: 3rem;
+        width: 25rem;
+        border-radius: 20px;
+       
     }
-`
 
-const SingleRecipe = ({recept}: any) => {
-    const [singelRecept, setRecipe] = useState<any>({});
-    const { receptId } = useParams()
+  }
+`;
 
-    useEffect(() => {
-        const fetchRecipe = async () => {
-            const recept = await fetch(`http://localhost:3005/recept/${receptId}`)
-            .then(res => res.json())
-            setRecipe(recept)
-            console.log("Recept: ", recept)
-        }
-        fetchRecipe();
-    }, [receptId])
+const SingleRecipe = () => {
+  const [recept, setRecipe] = useState<any>({});
+  const { receptId } = useParams();
 
-    return (
-        <StyledWrapper>
-            <section>
-                <img 
-                src={recept.imageUrl} 
-                alt={recept.title}
-                width="454"
-                height="280" />
-            </section>
-            <section>
-                <h1>{recept.title}</h1>
-                <p>{recept.description}</p>
-                <p>{recept.timeInMins} Min</p>
-                <p>{recept.ratings} Rating</p>
-                <p>INGREDIENTS</p>
-                <ul>
-                {recept.ingredients && recept.ingredients.map((ingredients: any) => (<li key={ingredients.ingredient}>{ingredients.amount} {ingredients.unit} {ingredients.ingredient}</li>))}
-                </ul>
-                <p>INSTRUCTIONS</p>
-                <ol>
-                {recept.instructions && recept.instructions.map((instructions: any) => (<li key={instructions}>{instructions} </li>))}
-                </ol>
-            </section>
-        </StyledWrapper>
-    )
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      const recept = await fetch(
+        `http://localhost:3005/recept/${receptId}`
+      ).then((res) => res.json());
+      setRecipe(recept);
+      console.log("Recept: ", recept);
+    };
+    fetchRecipe();
+    console.log("Recept: ", recept);
+  }, [receptId]);
+
+  return (
+    <StyledWrapper>
+      <div className="imageAndTitle">
+        <img src={recept.imageUrl} alt={recept.title} width="454" />
+      </div>
+      <div className="descriptionRecipe">
+        <h1>{recept.title}</h1>
+        <p>{recept.description}</p>
+        <p>{recept.timeinmins} Min</p>
+        <p>{recept.ratings} Rating</p>
+      </div>
+      <div className="ingredientsRecipe">
+          <p>INGREDIENTS</p>
+          <div>
+            {recept.ingredients &&
+              recept.ingredients.map((ingredients: any) => (
+                <li key={ingredients.name}>
+                  {ingredients.name} {ingredients.amount} {ingredients.unit}{" "}
+                </li>
+              ))}
+          </div>
+                
+
+        </div>
+
+        <div className="instructionsRecipe">
+          <p>INSTRUCTIONS</p>
+          <div>
+            {recept.instructions &&
+              recept.instructions.map((instructions: any) => (
+                <li key={instructions.order}>
+                  {instructions.instruction}  {" "}
+                </li>
+              ))}
+          </div>
+        </div>
+    </StyledWrapper>
+  );
+
+  //   return (
+  //     <div>
+  //       <div className="imageAndTitle">
+  //         <img
+  //           src={recept.imageUrl}
+  //           alt={recept.title}
+  //           width="454"
+  //           height="280"
+  //         />
+  //       </div>
+  //   <div className="descriptionRecipe">
+  //     <h1>{recept.title}</h1>
+  //     <p>{recept.description}</p>
+  //     <p>{recept.timeInMins} Min</p>
+  //     <p>{recept.ratings} Rating</p>
+  //   </div>
+        // <div className="ingredientsRecipe">
+        //   <p>INGREDIENTS</p>
+        //   <div>
+        //     {recept.ingredients &&
+        //       recept.ingredients.map((ingredients: any) => (
+        //         <li key={ingredients.ingredient}>
+        //           {ingredients.name} {ingredients.amount} {ingredients.unit}{" "}
+        //         </li>
+        //       ))}
+        //   </div>
+        // </div>
+        // <div className="instructionsRecipe">
+        //   <p>INSTRUCTIONS</p>
+        //   <div>
+        //     {recept.instructions &&
+        //       recept.instructions.map((instructions: any) => (
+        //         <li key={instructions}>{instructions} </li>
+        //       ))}
+        //   </div>
+        // </div>
+  //     </div>
+  //   );
 };
 
 export default SingleRecipe;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import styled from "styled-components";
 // // import Stars from "./Stars";
@@ -136,7 +180,7 @@ export default SingleRecipe;
 //         text-transform: uppercase;
 //     }
 //     & a {
-//         text-decoration: none;  
+//         text-decoration: none;
 //     }
 //     & .ratings-average {
 //         margin-top: 0rem;

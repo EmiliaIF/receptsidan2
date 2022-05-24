@@ -15,7 +15,7 @@ align-items:center;
 text-align:center;
 background-color: peachpuff;
 
-h1{
+.styling{
     font-family:kaushan script;
     position:absolute;
     color: black;
@@ -33,9 +33,9 @@ const MainHeader = () =>{
 
    return(
         <Header>
-            {/* <Link to={`/`}> */}
+            <Link className="styling" to={`/`}>
            <h1>THE DRINK HUB</h1>
-           {/* </Link>     */}
+           </Link>    
          </Header>
          
     );   

@@ -4,7 +4,7 @@ import express, { Request, Response} from 'express';
 import cors from 'cors'
 import dotenv from 'dotenv'
 import bodyParser, { json } from 'body-parser';
-import kategori from './models/kategori';
+import kategori from './routes/kategori';
 const app = express();
 
 

@@ -31,9 +31,17 @@ router.get('/', async (req: Request, res: Response) => {
 //     res.send(receptById);
 //   }
 // );
+// router.get(
+//   "/hej",
+//   async (req: express.Request, res: express.Response) => {
+
+//     res.status(200).json({});
+//   }
+// );
+
 
 router.get(
-    "/recept/:receptId",
+    "/:receptId",
     async (req: express.Request, res: express.Response) => {
       const params = req.params;
       let id = params.receptId;

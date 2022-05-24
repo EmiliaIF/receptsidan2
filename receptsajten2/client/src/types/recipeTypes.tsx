@@ -6,7 +6,7 @@ export interface RecipeTypes {
     timeInMins: Number;
     ratings: Array<number>;
     category: Array<string>;
-    ingredients: [{ingredient:string, amount:number, unit:string}];
+    ingredients: [{name:string, amount:number, unit:string}];
     instructions: Array<string>;
     // ratings: number[];
     // category: string[];
