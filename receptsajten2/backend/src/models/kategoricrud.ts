@@ -10,18 +10,22 @@ export const getCategory = async () => {
     return category;
   }
 
-export const getRecipeByCategory = async (category: String) => {
+export const getRecipeByCategory = async (category:string) => {
     const recept = await Recept.find({category: category});
+
+    console.log(recept)
     return recept;
 }
 
-export const getRecipesByCategorySearch = async (category: String) => {
-    const foundRecipes = await Recept.find({
-        category: {'$regex': category, '$options': 'i'}
-    })
-    return foundRecipes;
-}
-
+export const getReceptBysearch = async (searchterm: string) => { // Söker och kollar om där finns något i databasen på antingen "title" eller "category" som matchar searchTerm
+    const recipes = await Recept.find({$or: [
+      { title: { $regex: '^' + searchterm, $options: 'i' }},
+      { category: { $regex: '^' + searchterm, $options: 'i' }}
+    ]})
+    
+    console.log(recipes)
+    return recipes
+  }
 
 
 
