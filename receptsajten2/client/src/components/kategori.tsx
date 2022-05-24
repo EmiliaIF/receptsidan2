@@ -10,7 +10,14 @@ const StyledWrapper = styled.div`
     flex-wrap: wrap;
     width: 80%;
     margin: auto;
+
+.input{
+  border: 2px solid red;
+  border-radius: 4px;
+  background-color: #3CBC8D;
+}
 `
+
 
 const RecipesByCategoryList = () => {
     const [recepten, setRecipes] = useState<any>([]);
@@ -42,7 +49,7 @@ const RecipesByCategoryList = () => {
 
     return (
         <div>
-            <input
+            <input className="input"
         type="text"
         placeholder="Search for a drink!"
         value={searchTerm}

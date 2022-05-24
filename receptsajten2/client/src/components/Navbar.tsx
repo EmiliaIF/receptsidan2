@@ -7,13 +7,13 @@ const StyledNav = styled.div`
     justify-content: space-evenly;
     width: 100%;
     margin: auto;
-    background-color: #C0FFF1;
+    background-color: #F06363;
     p {
         font-size: 24px;
     };
     a {
         text-decoration: none;
-        color: #3A4442;
+        color: black;
     };
 
     .link-active {

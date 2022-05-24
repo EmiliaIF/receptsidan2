@@ -1,13 +1,12 @@
-import React from "react";
+
 import "./App.css";
 import { Routes, Route, Router } from "react-router-dom";
 import MainHeader from "./components/header";
 import SingleRecipe from "./components/recept";
 import RecipesByCategoryList from "./components/kategori";
 import RecipeList from "./components/receptlista";
-import RecipeCard from "./components/receptkort";
-import Receptlista from "./components/receptlista";
 import Navbar from "./components/Navbar";
+
 
 const App = () => {
   return (

@@ -13,7 +13,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-background-color: #9DEEDB;
+background-color: #FF7C7C;
 
 .styling{
     font-family:kaushan script;

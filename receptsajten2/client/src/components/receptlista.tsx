@@ -8,6 +8,15 @@ const StyledWrapper = styled.div`
   flex-wrap: wrap;
   width: 80%;
   margin: auto;
+  /* background-color: black; */
+
+
+  .searchruta{
+  border: 2px solid red;
+  border-radius: 4px;
+  background-color: #3CBC8D;
+}
+
 `;
 
 const RecipeList = () => {
@@ -40,8 +49,7 @@ const RecipeList = () => {
 
   return (
     <div>
-      <input
-        type="text"
+      <input className="searchruta" type="text"
         placeholder="Search for a drink!"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
