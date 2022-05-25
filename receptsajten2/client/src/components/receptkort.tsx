@@ -17,8 +17,9 @@ const StyledRecipeCard = styled.div`
   }
   a {
     text-decoration: none;
-    font-family: kaushan script;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: black;
+    font-size: 13px;
   }
   .star {
     padding-left: 6.2rem;
@@ -46,9 +47,10 @@ const RecipeCard = ({ recept }: any) => {
         <Link to={`/recept/${recept._id}`}>
           <img
             src={recept.imageUrl}
+
             alt={recept.title}
-            width="304"
-            height="180"
+            width="300"
+            height="200"
           />
           <h2>{recept.title}</h2>
           <p className="star">

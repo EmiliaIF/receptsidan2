@@ -123,7 +123,7 @@ const SingleRecipe = () => {
 
   useEffect(() => {
     if (recept.ratings !== undefined) {
-      // Kollar om där finns ratings
+      // Kollar om det finns ratings
       if (recept.ratings === []) return setRatings(0); // Kollar så att arrayen av ratings inte är tom
 
       let tempRating = 0;

@@ -8,6 +8,7 @@ const StyledNav = styled.div`
     width: 100%;
     margin: auto;
     background-color: #F06363;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     p {
         font-size: 24px;
     };

@@ -16,7 +16,7 @@ text-align:center;
 background-color: #FF7C7C;
 
 .styling{
-    font-family:kaushan script;
+    font-family: 'Times New Roman', Times, serif;
     position:absolute;
     color: black;
     z-index:5;
